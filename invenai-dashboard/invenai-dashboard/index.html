@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Inventory Management Agent – E-Commerce</title>
+  <meta name="description" content="AI-powered inventory management dashboard for e-commerce businesses." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+   <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo">
+        <span class="logo-icon">⚡</span>
+        <div class="logo-text">
+          <span class="logo-title">InvenAI</span>
+          <span class="logo-sub">E-Commerce Agent</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-section="dashboard" id="nav-dashboard">
+        <span class="nav-icon">Overview</span>
+        <span class="nav-label">Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-section="inventory" id="nav-inventory">
+        <span class="nav-icon">Stock</span>
+        <span class="nav-label">Inventory</span>
+      </a>
+      <a href="#" class="nav-item" data-section="sales" id="nav-sales">
+        <span class="nav-icon">Sales</span>
+        <span class="nav-label">Sales History</span>
+      </a>
+      <a href="#" class="nav-item" data-section="ai-agent" id="nav-ai-agent">
+        <span class="nav-icon">AI</span>
+        <span class="nav-label">AI Agent</span>
+        <span class="nav-badge">7</span>
+      </a>
+      <a href="#" class="nav-item" data-section="alerts" id="nav-alerts">
+        <span class="nav-icon">Alerts</span>
+        <span class="nav-label">Alerts</span>
+        <span class="nav-badge alert">5</span>
+      </a>
+      <a href="#" class="nav-item" data-section="forecast" id="nav-forecast">
+        <span class="nav-icon">Forecast</span>
+        <span class="nav-label">Forecast</span>
+      </a>
+      <a href="#" class="nav-item" data-section="regional" id="nav-regional">
+        <span class="nav-icon">Regions</span>
+        <span class="nav-label">Regional Analysis</span>
+      </a>
+      <a href="#" class="nav-item" data-section="simulator" id="nav-simulator">
+        <span class="nav-icon">Simulate</span>
+        <span class="nav-label">What-If Simulator</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="agent-status">
+        <span class="status-dot"></span>
+        <span>AI Agent Active</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-wrapper">
+    <!-- Top Bar -->
+    <header class="topbar">
+       <button class="menu-toggle" id="menuToggle" aria-label="Open navigation">☰</button>
+      <div class="topbar-search">
+        <input type="text" placeholder="Search products, categories..." id="globalSearch" />
+         <span class="search-icon">⌕</span>
+      </div>
+      <div class="topbar-actions">
+         <div class="topbar-date">03 sep, 2026</div>
+         <div class="notif-btn" title="Alerts">◌ <span class="badge">5</span></div>
+        <div class="avatar">RG</div>
+      </div>
+    </header>
+
+    <main class="content" id="mainContent">
+
+      <!-- ===== DASHBOARD ===== -->
+      <section class="page active" id="page-dashboard">
+        <div class="page-header">
+          <h1>Dashboard Overview</h1>
+          <p>Real-time inventory intelligence for your e-commerce store</p>
+        </div>
+
+        <div class="kpi-grid" id="kpiGrid"></div>
+
+        <div class="charts-row">
+          <div class="card chart-card">
+             <div class="card-header">
+               <h3>Inventory by Category</h3>
+              <select class="chart-filter">
+                <option>All Regions</option>
+                <option>Chennai</option>
+                <option>Mumbai</option>
+                <option>Delhi</option>
+                <option>Bangalore</option>
+              </select>
+            </div>
+            <canvas id="inventoryChart" height="200"></canvas>
+          </div>
+          <div class="card chart-card">
+             <div class="card-header">
+               <h3>Sales Trend (7 Days)</h3>
+              <select class="chart-filter">
+                <option>Last 7 Days</option>
+                <option>Last 30 Days</option>
+                <option>Last 90 Days</option>
+              </select>
+            </div>
+            <canvas id="salesTrendChart" height="200"></canvas>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card">
+             <div class="card-header"><h3>High Demand Products</h3></div>
+            <div id="highDemandList"></div>
+          </div>
+          <div class="card">
+             <div class="card-header"><h3>Low Stock Products</h3></div>
+            <div id="lowStockList"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== INVENTORY ===== -->
+      <section class="page" id="page-inventory">
+        <div class="page-header">
+          <h1>Inventory Management</h1>
+          <p>Track and manage all product stock across regions</p>
+        </div>
+        <div class="toolbar">
+          <div class="search-box">
+            <input type="text" id="inventorySearch" placeholder="Search products..." />
+          </div>
+          <div class="filter-group">
+            <select id="categoryFilter">
+              <option value="">All Categories</option>
+              <option>Clothing</option>
+              <option>Electronics</option>
+              <option>Accessories</option>
+              <option>Footwear</option>
+              <option>Home & Kitchen</option>
+            </select>
+            <select id="regionFilter">
+              <option value="">All Regions</option>
+              <option>Chennai</option>
+              <option>Mumbai</option>
+              <option>Delhi</option>
+              <option>Bangalore</option>
+            </select>
+          </div>
+          <div class="btn-group">
+             <button class="btn btn-primary" onclick="openModal('addProductModal')">+ Add Product</button>
+             <button class="btn btn-secondary" onclick="openModal('updateStockModal')">Update Stock</button>
+          </div>
+        </div>
+        <div class="card">
+          <table class="data-table" id="inventoryTable">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Region</th>
+                <th>Stock</th>
+                <th>Units Sold</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== SALES HISTORY ===== -->
+      <section class="page" id="page-sales">
+        <div class="page-header">
+          <h1>Sales History</h1>
+          <p>Analyze historical sales performance and trends</p>
+        </div>
+        <div class="charts-row">
+          <div class="card chart-card">
+             <div class="card-header"><h3>Monthly Revenue</h3></div>
+            <canvas id="monthlyRevenueChart" height="220"></canvas>
+          </div>
+          <div class="card chart-card">
+             <div class="card-header"><h3>Sales by Category</h3></div>
+            <canvas id="categorySalesChart" height="220"></canvas>
+          </div>
+        </div>
+        <div class="card chart-card full-width-chart">
+          <div class="card-header">
+             <h3>Product-Level Sales Trends</h3>
+            <select class="chart-filter" id="productTrendFilter" onchange="updateProductTrendChart()">
+              <option value="umbrella">Umbrella</option>
+              <option value="raincoat">Raincoat</option>
+              <option value="sunscreen">Sunscreen</option>
+              <option value="sunglasses">Sunglasses</option>
+            </select>
+          </div>
+          <canvas id="productTrendChart" height="150"></canvas>
+        </div>
+        <div class="card">
+           <div class="card-header"><h3>Top Selling Products</h3></div>
+          <table class="data-table">
+            <thead><tr><th>Product</th><th>Category</th><th>Units Sold</th><th>Revenue</th><th>Trend</th></tr></thead>
+            <tbody id="topSalesBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== AI AGENT ===== -->
+      <section class="page" id="page-ai-agent">
+        <div class="page-header">
+           <h1>AI Agent Intelligence</h1>
+          <p>Real-time insights, recommendations, and autonomous actions</p>
+        </div>
+        <div class="ai-hero">
+          <div class="ai-brain-anim">🧠</div>
+          <div class="ai-hero-text">
+            <h2>AI Analysis Complete</h2>
+            <p>Analyzed 1,247 data points across 4 regions • Last updated just now</p>
+          </div>
+          <div class="ai-confidence">
+            <span class="confidence-label">Confidence Score</span>
+            <span class="confidence-value">94.7%</span>
+          </div>
+        </div>
+        <div id="aiInsightCards"></div>
+        <div class="two-col" style="margin-top:1.5rem;">
+          <div class="card">
+             <div class="card-header"><h3>Action Queue</h3></div>
+            <div id="actionQueue"></div>
+          </div>
+          <div class="card">
+             <div class="card-header"><h3>Market Signals</h3></div>
+            <div id="marketSignals"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== ALERTS ===== -->
+      <section class="page" id="page-alerts">
+        <div class="page-header">
+           <h1>Alerts & Notifications</h1>
+          <p>Critical inventory alerts that need your attention</p>
+        </div>
+        <div class="alert-summary-bar" id="alertSummaryBar"></div>
+        <div id="alertsContainer"></div>
+      </section>
+
+      <!-- ===== FORECAST ===== -->
+      <section class="page" id="page-forecast">
+        <div class="page-header">
+          <h1>🔮 Demand Forecast</h1>
+          <p>AI-predicted demand and recommended stock levels</p>
+        </div>
+        <div class="charts-row">
+          <div class="card chart-card">
+            <div class="card-header">
+               <h3>Historical vs Predicted Demand</h3>
+              <select class="chart-filter" id="forecastProductFilter" onchange="updateForecastChart()">
+                <option>Umbrella</option>
+                <option>Raincoat</option>
+                <option>Sunscreen</option>
+                <option>Fan</option>
+                <option>Sunglasses</option>
+              </select>
+            </div>
+            <canvas id="forecastChart" height="200"></canvas>
+          </div>
+          <div class="card chart-card">
+             <div class="card-header"><h3>Recommended Stock Levels</h3></div>
+            <canvas id="recommendedStockChart" height="200"></canvas>
+          </div>
+        </div>
+        <div class="card">
+           <div class="card-header"><h3>Forecast Summary Table</h3></div>
+          <table class="data-table">
+            <thead><tr><th>Product</th><th>Current Stock</th><th>Predicted Demand (30d)</th><th>Recommended Order</th><th>Est. Stock-out</th><th>Priority</th></tr></thead>
+            <tbody id="forecastTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== REGIONAL ANALYSIS ===== -->
+      <section class="page" id="page-regional">
+        <div class="page-header">
+           <h1>Regional Analysis</h1>
+          <p>Compare inventory, demand, and sales performance across regions</p>
+        </div>
+        <div class="region-cards" id="regionCards"></div>
+        <div class="charts-row">
+          <div class="card chart-card">
+             <div class="card-header"><h3>Stock Distribution by Region</h3></div>
+            <canvas id="regionalStockChart" height="220"></canvas>
+          </div>
+          <div class="card chart-card">
+             <div class="card-header"><h3>Revenue by Region</h3></div>
+            <canvas id="regionalRevenueChart" height="220"></canvas>
+          </div>
+        </div>
+        <div class="card">
+           <div class="card-header"><h3>Region-by-Region Product Breakdown</h3></div>
+          <table class="data-table">
+            <thead><tr><th>Region</th><th>Top Product</th><th>Stock</th><th>Units Sold</th><th>Revenue</th><th>Demand Index</th></tr></thead>
+            <tbody id="regionalTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===== WHAT-IF SIMULATOR ===== -->
+      <section class="page" id="page-simulator">
+        <div class="page-header">
+           <h1>What-If Simulator</h1>
+          <p>Model inventory scenarios and predict outcomes before making decisions</p>
+        </div>
+        <div class="simulator-layout">
+          <div class="card sim-controls">
+             <div class="card-header"><h3>Simulation Parameters</h3></div>
+            <div class="sim-form">
+              <div class="form-group">
+                <label>Select Product</label>
+                <select id="simProduct">
+                  <option>Umbrella</option>
+                  <option>Raincoat</option>
+                  <option>Sunscreen</option>
+                  <option>Fan</option>
+                  <option>Sunglasses</option>
+                  <option>Water Bottle</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Select Region</label>
+                <select id="simRegion">
+                  <option>Chennai</option>
+                  <option>Mumbai</option>
+                  <option>Delhi</option>
+                  <option>Bangalore</option>
+                  <option>All Regions</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Sales Increase/Decrease (%)</label>
+                <div class="slider-wrap">
+                  <input type="range" id="salesChangeSlider" min="-50" max="100" value="30" oninput="updateSimResults()" />
+                  <span class="slider-val" id="sliderVal">+30%</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Time Horizon (Days)</label>
+                <input type="number" id="simDays" value="30" min="7" max="90" onchange="updateSimResults()" />
+              </div>
+              <div class="form-group">
+                <label>Supply Lead Time (Days)</label>
+                <input type="number" id="simLeadTime" value="5" min="1" max="30" onchange="updateSimResults()" />
+              </div>
+             <button class="btn btn-primary full-width" onclick="runSimulation()">Run Simulation</button>
+            </div>
+          </div>
+          <div class="sim-results">
+            <div class="sim-metric-cards" id="simMetricCards"></div>
+            <div class="card chart-card">
+               <div class="card-header"><h3>Projected Stock Level</h3></div>
+              <canvas id="simChart" height="200"></canvas>
+            </div>
+            <div class="card" id="simRecommendations">
+               <div class="card-header"><h3>AI Recommendations</h3></div>
+              <div id="simRecList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===== MODALS ===== -->
+  <div class="modal-overlay" id="addProductModal">
+    <div class="modal">
+      <div class="modal-header">
+         <h3>Add New Product</h3>
+        <button class="modal-close" onclick="closeModal('addProductModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group"><label>Product Name</label><input type="text" id="newProductName" placeholder="e.g. Umbrella Black" /></div>
+          <div class="form-group"><label>Category</label>
+            <select id="newCategory">
+              <option>Clothing</option><option>Electronics</option><option>Accessories</option><option>Footwear</option><option>Home & Kitchen</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Region</label>
+            <select id="newRegion"><option>Chennai</option><option>Mumbai</option><option>Delhi</option><option>Bangalore</option></select>
+          </div>
+          <div class="form-group"><label>Initial Stock</label><input type="number" id="newStock" placeholder="0" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Price (₹)</label><input type="number" id="newPrice" placeholder="0.00" /></div>
+          <div class="form-group"><label>Reorder Point</label><input type="number" id="newReorder" placeholder="50" /></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('addProductModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="addProduct()">Add Product</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="updateStockModal">
+    <div class="modal">
+      <div class="modal-header">
+         <h3>Update Stock</h3>
+        <button class="modal-close" onclick="closeModal('updateStockModal')">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Select Product</label>
+          <select id="updateProductSelect"></select>
+        </div>
+        <div class="form-group">
+          <label>Adjustment Type</label>
+          <div class="radio-group">
+            <label><input type="radio" name="adjType" value="add" checked /> Add Stock</label>
+            <label><input type="radio" name="adjType" value="remove" /> Remove Stock</label>
+            <label><input type="radio" name="adjType" value="set" /> Set Exact</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Quantity</label>
+          <input type="number" id="updateQty" placeholder="Enter quantity" />
+        </div>
+        <div class="form-group">
+          <label>Reason / Notes</label>
+          <textarea id="updateNote" placeholder="e.g. Received new shipment"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('updateStockModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="updateStock()">Update Stock</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
